@@ -33,7 +33,8 @@ apt update && apt upgrade -y
 apt install git python3 -y
 
 # Clone this repository
-git clone [https://github.com/YOUR_USERNAME/HCO-OSINT](https://github.com/YOUR_USERNAME/HCO-OSINT)
+git clone https://github.com/Hackerscolonyofficial/HCO-GHunt.git
+
 cd HCO-OSINT
 
 # Install dependencies
@@ -44,7 +45,7 @@ python3 hco_osint.py
 
 ```
 👨‍💻 Developed by
-MD AZRUDDIN | HCO TEAM
+AZHAT | HCO TEAM
 "The best way to protect against a hack is to think like a hacker."
 © 2026 HCO TEAM. All rights reserved.
 
