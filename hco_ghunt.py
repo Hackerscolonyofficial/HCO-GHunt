@@ -11,83 +11,75 @@ YELLOW = '\033[1;33m'
 BOLD = '\033[1m'
 RESET = '\033[0m'
 
-# User-Agent headers (taaki website block na kare)
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
-}
+# Headers for Real Scanning
+HEADERS = {"User-Agent": "Mozilla/5.0"}
+
+# Website List (100+ targets possible here)
+SITES = [
+    ("Instagram", "https://www.instagram.com/{}"), ("Twitter", "https://twitter.com/{}"),
+    ("GitHub", "https://github.com/{}"), ("Pinterest", "https://www.pinterest.com/{}"),
+    ("Snapchat", "https://www.snapchat.com/add/{}"), ("Telegram", "https://t.me/{}"),
+    ("Reddit", "https://www.reddit.com/user/{}"), ("Steam", "https://steamcommunity.com/id/{}"),
+    ("WordPress", "https://{}.wordpress.com"), ("Medium", "https://medium.com/@{}"),
+    ("SoundCloud", "https://soundcloud.com/{}"), ("Vimeo", "https://vimeo.com/{}"),
+    ("Behance", "https://www.behance.net/{}"), ("Flickr", "https://www.flickr.com/people/{}"),
+    ("About.me", "https://about.me/{}"), ("Tumblr", "https://{}.tumblr.com"),
+    ("Discord", "https://discord.com/users/{}"), ("Twitch", "https://twitch.tv/{}")
+]
+
+def lock_screen():
+    os.system('clear')
+    print(f"{RED}{BOLD}!!! THIS TOOL IS LOCKED !!!{RESET}")
+    print(f"{YELLOW}To use this tool, you need to Subscribe and click on the Bell Icon.{RESET}")
+    print(f"{GREEN}Redirecting you to YouTube in...{RESET}")
+    for i in range(7, -1, -1):
+        print(f"{BOLD}{i}{RESET}", end=" ", flush=True)
+        time.sleep(1)
+    subprocess.run(["termux-open-url", "https://youtube.com/@hackers_colony_termux?si=18WolRHW-UiVybvf"])
+    input(f"\n\n{BOLD}Press Enter after subscribing to Unlock...{RESET}")
 
 def banner():
     os.system('clear')
-    print(f"{RED}{BOLD}  _    _  _____ ____  ")
-    print(" | |  | |/ ____/ __ \ ")
-    print(" | |__| | |   | |  | |")
-    print(" |  __  | |   | |  | |")
-    print(" | |  | | |___| |__| |")
-    print(" |_|  |_|\_____\____/ ")
-    print(f"{RESET}{RED}HCO-OSINT PRO | REAL SCAN{RESET}\n")
+    print(f"{GREEN}{BOLD}  _    _  _____ ____  {RESET}")
+    print(f"{GREEN} | |  | |/ ____/ __ \\ {RESET}")
+    print(f"{GREEN} | |__| | |   | |  | |{RESET}")
+    print(f"{GREEN} |  __  | |   | |  | |{RESET}")
+    print(f"{GREEN} | |  | | |___| |__| |{RESET}")
+    print(f"{GREEN} |_|  |_|\\_____\\____/ {RESET}")
+    print(f"{RED}HCO-GHUNT BY AZHAR | HCO TEAM{RESET}\n")
 
 def run_scan():
-    username = input(f"\n{YELLOW}Enter Username/Email: {RESET}").split('@')[0]
-    print(f"\n{GREEN}[+] Initializing Deep Scan for: {username}{RESET}")
+    user = input(f"{YELLOW}Enter Gmail ID/Username to scan: {RESET}").split('@')[0]
+    print(f"\n{GREEN}[+] Starting Scan on {len(SITES)} platforms...{RESET}\n")
     
-    sites = {
-        "Instagram": f"https://www.instagram.com/{username}/",
-        "Twitter/X": f"https://twitter.com/{username}",
-        "GitHub": f"https://github.com/{username}",
-        "Pinterest": f"https://www.pinterest.com/{username}/",
-        "Snapchat": f"https://www.snapchat.com/add/{username}",
-        "Reddit": f"https://www.reddit.com/user/{username}",
-        "Telegram": f"https://t.me/{username}",
-        "Steam": f"https://steamcommunity.com/id/{username}",
-        "WordPress": f"https://{username}.wordpress.com",
-        "Medium": f"https://medium.com/@{username}",
-        "Behance": f"https://www.behance.net/{username}",
-        "SoundCloud": f"https://soundcloud.com/{username}",
-        "Vimeo": f"https://vimeo.com/{username}",
-        "About.me": f"https://about.me/{username}"
-    }
-    
-    found_list = []
-    not_found_list = []
-    
-    for name, url in sites.items():
+    found = []
+    for name, url in SITES:
+        print(f"{YELLOW}[SCANNING]{RESET} {name: <15}", end="\r")
         try:
-            # Request with headers (Bot protection bypass)
-            response = requests.get(url, headers=HEADERS, timeout=5)
-            if response.status_code == 200:
-                found_list.append(name)
+            r = requests.get(url.format(user), headers=HEADERS, timeout=3)
+            if r.status_code == 200:
+                print(f"{GREEN}[FOUND] >> {name: <15} (AVAILABLE){RESET}")
+                found.append(name)
             else:
-                not_found_list.append(name)
+                pass # Not found list me shor nahi machayenge
         except:
-            not_found_list.append(name)
+            pass
     
-    # RESULT PRINTING
-    print(f"\n{BOLD}{GREEN}--- FOUND ({len(found_list)}) ---{RESET}")
-    for item in found_list:
-        print(f"{GREEN}[FOUND] >> {item}{RESET}")
-        
-    print(f"\n{BOLD}{RED}--- NOT FOUND ({len(not_found_list)}) ---{RESET}")
-    for item in not_found_list:
-        print(f"{RED}[NOT FOUND] >> {item}{RESET}")
-        
+    print(f"\n{BOLD}{GREEN}--- SCAN COMPLETE ---{RESET}")
+    print(f"{YELLOW}Total Accounts Found: {len(found)}{RESET}")
+    for i, name in enumerate(found, 1):
+        print(f"{YELLOW}{i}. {name}{RESET}")
     input(f"\n{BOLD}Press Enter to return...{RESET}")
 
 def main():
-    # Lock Flow
-    os.system('clear')
-    print(f"{RED}{BOLD}!!! TOOL LOCKED !!!{RESET}")
-    subprocess.run(["termux-open-url", "https://youtube.com/@hackers_colony_termux?si=18WolRHW-UiVybvf"])
-    input(f"\n{BOLD}Press Enter after subscribing to Unlock...{RESET}")
-    
+    lock_screen()
     while True:
         banner()
-        print("1. Run Real OSINT Scan")
+        print("1. Run Tool")
         print("2. Exit")
-        choice = input(f"\n{BOLD}HCO@termux >> {RESET}")
-        if choice == '1':
-            run_scan()
-        elif choice == '2':
-            sys.exit()
+        ch = input(f"\n{BOLD}HCO@termux >> {RESET}")
+        if ch == '1': run_scan()
+        elif ch == '2': sys.exit()
 
 if __name__ == "__main__":
     main()
