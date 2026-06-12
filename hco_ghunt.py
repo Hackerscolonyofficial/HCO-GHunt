@@ -24,39 +24,29 @@ def lock_system():
     os.system('clear')
     print(f"{RED}{BOLD}!!! TOOL LOCKED !!!{RESET}")
     print(f"{YELLOW}To unlock this tool, you must support the channel.{RESET}")
-    print("You will be redirected to YouTube. Please Like, Subscribe & Hit Bell Icon.")
-    print(f"\n{GREEN}Redirecting in...{RESET}", end="", flush=True)
-    
-    for i in range(5, 0, -1):
-        print(f" {i}", end="", flush=True)
-        time.sleep(1)
-    
-    # YouTube Redirect
+    print("Redirecting to YouTube... Subscribe & Hit Bell Icon.")
+    time.sleep(3)
+    # YouTube redirect
     subprocess.run(["termux-open-url", "https://youtube.com/@hackers_colony_termux?si=18WolRHW-UiVybvf"])
-    
-    print(f"\n\n{YELLOW}Redirected!{RESET}")
-    input(f"{BOLD}Enter here after subscribing to Unlock the tool...{RESET}")
+    input(f"\n{BOLD}Press Enter after subscribing to Unlock the tool...{RESET}")
 
 def run_real_scan():
     email = input(f"\n{YELLOW}Enter Target Email to Scan: {RESET}")
     print(f"\n{GREEN}[+] Initializing OSINT Engine...{RESET}")
     
-    # Check folder path inside current directory
-    ghunt_path = os.path.join(os.getcwd(), "ghunt", "ghunt.py")
+    # Check if ghunt exists in the same folder
+    ghunt_path = os.path.join("ghunt", "ghunt.py")
     
     if os.path.exists(ghunt_path):
         os.system(f"python3 {ghunt_path} email {email}")
     else:
-        print(f"\n{RED}[!] Error: 'ghunt' directory/file not found!{RESET}")
-        print(f"{YELLOW}[!] Run: 'git clone https://github.com/mxrch/ghunt' inside this folder.{RESET}")
+        print(f"\n{RED}[!] Error: 'ghunt' engine not found!{RESET}")
+        print(f"{YELLOW}[!] Run this command first: 'git clone https://github.com/mxrch/ghunt' inside this folder.{RESET}")
     
     input(f"\n{BOLD}Press Enter to return to menu...{RESET}")
 
 def main():
-    # Pehle Lock hoga
     lock_system()
-    
-    # Phir Menu loop
     while True:
         banner()
         print("1. Run HCO-GHUNT (Real OSINT)")
